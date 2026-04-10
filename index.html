@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>shopilo-it | Codici sconto Italia</title>
+  <meta name="description" content="Raccolta di script Python open-source per il recupero automatico di codici sconto dai negozi online italiani. I dati vengono prelevati in tempo reale da Shopilo.it, il piu grande aggregatore di coupon in Italia.">
+  <meta name="robots" content="index, follow">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;background:#0d1117;color:#e6edf3;line-height:1.5}
+    a{color:#58a6ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+    header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 0}
+    .hdr{display:flex;justify-content:space-between;align-items:center}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:#e6edf3;text-decoration:none}
+    nav a{font-size:13px;color:#8b949e;margin-left:20px}
+    nav a:hover{color:#e6edf3;text-decoration:none}
+    .hero{padding:56px 0 40px}
+    .hero-eyebrow{font-size:12px;color:#8b949e;font-family:'SFMono-Regular',Consolas,monospace;margin-bottom:12px}
+    .hero h1{font-size:36px;font-weight:700;margin-bottom:16px;line-height:1.2}
+    .hero-desc{font-size:16px;color:#8b949e;max-width:620px;margin-bottom:24px}
+    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+    .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid}
+    .badge-blue{background:rgba(31,111,235,.1);border-color:#1f6feb;color:#79c0ff}
+    .badge-green{background:rgba(35,134,54,.1);border-color:#238636;color:#56d364}
+    .badge-gray{background:#21262d;border-color:#30363d;color:#8b949e}
+    .code-block{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px 24px;font-family:'SFMono-Regular',Consolas,monospace;font-size:13px;line-height:1.8;max-width:560px}
+    .c-comment{color:#8b949e}
+    .c-cmd{color:#e6edf3}
+    .stats{background:#161b22;border-top:1px solid #30363d;border-bottom:1px solid #30363d;padding:14px 0;font-size:13px;color:#8b949e}
+    .stats-inner{display:flex;flex-wrap:wrap;gap:24px}
+    .stat{display:flex;align-items:center;gap:6px}
+    .stat-val{color:#e6edf3;font-weight:600}
+    section{padding:40px 0 60px}
+    .sec-hdr{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+    .sec-title{font-size:18px;font-weight:600}
+    .sec-count{background:#21262d;border:1px solid #30363d;border-radius:20px;padding:2px 10px;font-size:12px;color:#8b949e}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+    .card{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px;transition:.15s}
+    .card:hover{border-color:#388bfd;box-shadow:0 0 0 3px rgba(56,139,253,.1)}
+    .card-head{margin-bottom:12px}
+    .card-name{font-size:15px;font-weight:600;color:#e6edf3;margin-bottom:2px}
+    .card-slug{font-size:11px;color:#8b949e;font-family:'SFMono-Regular',Consolas,monospace}
+    .npm-box{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:7px 11px;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;color:#e6edf3;margin-bottom:12px}
+    .npm-prompt{color:#3fb950;margin-right:6px;user-select:none}
+    .card-btns{display:flex;gap:8px}
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;transition:.15s;white-space:nowrap}
+    .btn-gh{background:#238636;color:#fff;border:1px solid rgba(240,246,252,.1)}
+    .btn-gh:hover{background:#2ea043;text-decoration:none}
+    .btn-shop{background:transparent;color:#e6edf3;border:1px solid #30363d}
+    .btn-shop:hover{background:#21262d;text-decoration:none;border-color:#8b949e}
+    footer{background:#161b22;border-top:1px solid #30363d;padding:20px 0;font-size:12px;color:#8b949e;text-align:center}
+    @media(max-width:600px){.hero h1{font-size:26px}.stats-inner{gap:14px}}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="hdr">
+      <a href="/" class="logo"><svg height="24" viewBox="0 0 16 16" width="24" fill="#e6edf3"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>shopilo-it</a>
+      <nav>
+        <a href="https://github.com/shopilo-it" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://shopilo.it" target="_blank" rel="noopener">shopilo.it</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-eyebrow">github.com / shopilo-it</div>
+    <h1>Codici sconto Italia</h1>
+    <p class="hero-desc">Raccolta di script Python open-source per il recupero automatico di codici sconto dai negozi online italiani. I dati vengono prelevati in tempo reale da Shopilo.it, il piu grande aggregatore di coupon in Italia.</p>
+    <div class="badges">
+      <span class="badge badge-blue">Python 3.8+</span>
+      <span class="badge badge-green">MIT License</span>
+      <span class="badge badge-gray">npm disponibile</span>
+      <span class="badge badge-gray">Dati live shopilo.it</span>
+    </div>
+    <div class="code-block">
+      <span class="c-comment"># Installa le dipendenze</span><br>
+      <span class="c-cmd">pip install requests beautifulsoup4</span><br><br>
+      <span class="c-comment"># Recupero automatico codici sconto</span><br>
+      <span class="c-cmd">git clone https://github.com/shopilo-it/codice-sconto-[negozio]</span><br>
+      <span class="c-cmd">python fetch.py</span>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stats-inner">
+      <span class="stat"><span class="stat-val">103</span> negozi</span>
+      <span class="stat">Python <span class="stat-val">3.8+</span></span>
+      <span class="stat">Fonte dati: <span class="stat-val">shopilo.it</span></span>
+      <span class="stat">npm i <span class="stat-val">codice-sconto-[negozio]</span></span>
+      <span class="stat">Licenza: <span class="stat-val">MIT</span></span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section>
+    <div class="sec-hdr">
+      <span class="sec-title">Negozi</span>
+      <span class="sec-count">103</span>
+    </div>
+    <div class="grid">
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Shein</div>
+        <div class="card-slug">codice-sconto-shein</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-shein</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-shein" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/shein.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Shein</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Temu</div>
+        <div class="card-slug">codice-sconto-temu</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-temu</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-temu" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/temu.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Temu</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">AliExpress</div>
+        <div class="card-slug">codice-sconto-aliexpress</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-aliexpress</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-aliexpress" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/aliexpress.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto AliExpress</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Amazon</div>
+        <div class="card-slug">codice-sconto-amazon</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-amazon</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-amazon" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/amazon.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Amazon</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">DHgate</div>
+        <div class="card-slug">codice-sconto-dhgate</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-dhgate</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-dhgate" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/dhgate.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto DHgate</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Groupon</div>
+        <div class="card-slug">codice-sconto-groupon</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-groupon</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-groupon" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/groupon.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Groupon</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">MediaWorld</div>
+        <div class="card-slug">codice-sconto-mediaworld</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-mediaworld</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-mediaworld" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/mediaworld.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto MediaWorld</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Unieuro</div>
+        <div class="card-slug">codice-sconto-unieuro</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-unieuro</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-unieuro" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/unieuro.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Unieuro</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Euronics</div>
+        <div class="card-slug">codice-sconto-euronics</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-euronics</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-euronics" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/euronics.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Euronics</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Comet</div>
+        <div class="card-slug">codice-sconto-comet</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-comet</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-comet" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/comet.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Comet</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Dyson</div>
+        <div class="card-slug">codice-sconto-dyson</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-dyson</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-dyson" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/dyson.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Dyson</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Philips</div>
+        <div class="card-slug">codice-sconto-philips</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-philips</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-philips" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/philips.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Philips</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">ASOS</div>
+        <div class="card-slug">codice-sconto-asos</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-asos</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-asos" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/asos.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto ASOS</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Nike</div>
+        <div class="card-slug">codice-sconto-nike</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-nike</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-nike" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/nike.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Nike</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Adidas</div>
+        <div class="card-slug">codice-sconto-adidas</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-adidas</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-adidas" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/adidas.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Adidas</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">OVS</div>
+        <div class="card-slug">codice-sconto-ovs</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-ovs</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-ovs" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/ovs.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto OVS</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Bershka</div>
+        <div class="card-slug">codice-sconto-bershka</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-bershka</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-bershka" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/bershka.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Bershka</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Mango</div>
+        <div class="card-slug">codice-sconto-mango</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-mango</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-mango" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/mango.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Mango</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Tezenis</div>
+        <div class="card-slug">codice-sconto-tezenis</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-tezenis</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-tezenis" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/tezenis.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Tezenis</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Intimissimi</div>
+        <div class="card-slug">codice-sconto-intimissimi</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-intimissimi</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-intimissimi" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/intimissimi.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Intimissimi</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Bonprix</div>
+        <div class="card-slug">codice-sconto-bonprix</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-bonprix</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-bonprix" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/bonprix.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Bonprix</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Modivo</div>
+        <div class="card-slug">codice-sconto-modivo</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-modivo</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-modivo" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/modivo.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Modivo</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Farfetch</div>
+        <div class="card-slug">codice-sconto-farfetch</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-farfetch</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-farfetch" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/farfetch.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Farfetch</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Saldi Privati</div>
+        <div class="card-slug">codice-sconto-saldiprivati</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-saldiprivati</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-saldiprivati" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/saldiprivati.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Saldi Privati</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">EMP</div>
+        <div class="card-slug">codice-sconto-emp</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-emp</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-emp" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/emp-online.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto EMP</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">New Balance</div>
+        <div class="card-slug">codice-sconto-newbalance</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-newbalance</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-newbalance" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/newbalance.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto New Balance</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Foot Locker</div>
+        <div class="card-slug">codice-sconto-footlocker</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-footlocker</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-footlocker" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/footlocker.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Foot Locker</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">JD Sports</div>
+        <div class="card-slug">codice-sconto-jdsports</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-jdsports</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-jdsports" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/jdsports.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto JD Sports</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">eScarpe</div>
+        <div class="card-slug">codice-sconto-escarpe</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-escarpe</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-escarpe" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/escarpe.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto eScarpe</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Spartoo</div>
+        <div class="card-slug">codice-sconto-spartoo</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-spartoo</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-spartoo" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/spartoo.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Spartoo</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Sarenza</div>
+        <div class="card-slug">codice-sconto-sarenza</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-sarenza</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-sarenza" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/sarenza.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Sarenza</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Timberland</div>
+        <div class="card-slug">codice-sconto-timberland</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-timberland</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-timberland" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/timberland.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Timberland</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Deporvillage</div>
+        <div class="card-slug">codice-sconto-deporvillage</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-deporvillage</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-deporvillage" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/deporvillage.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Deporvillage</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Douglas</div>
+        <div class="card-slug">codice-sconto-douglas</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-douglas</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-douglas" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/douglas.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Douglas</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Notino</div>
+        <div class="card-slug">codice-sconto-notino</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-notino</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-notino" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/notino.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Notino</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Sephora</div>
+        <div class="card-slug">codice-sconto-sephora</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-sephora</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-sephora" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/sephora.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Sephora</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Pinalli</div>
+        <div class="card-slug">codice-sconto-pinalli</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-pinalli</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-pinalli" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/pinalli.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Pinalli</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Lookfantastic</div>
+        <div class="card-slug">codice-sconto-lookfantastic</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-lookfantastic</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-lookfantastic" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/lookfantastic.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Lookfantastic</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">KIKO Milano</div>
+        <div class="card-slug">codice-sconto-kiko</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-kiko</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-kiko" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/kikocosmetics.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto KIKO Milano</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Bottega Verde</div>
+        <div class="card-slug">codice-sconto-bottegaverde</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-bottegaverde</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-bottegaverde" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/bottegaverde.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Bottega Verde</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Ecco Verde</div>
+        <div class="card-slug">codice-sconto-eccoverde</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-eccoverde</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-eccoverde" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/ecco-verde.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Ecco Verde</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">FarmaSave</div>
+        <div class="card-slug">codice-sconto-farmasave</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-farmasave</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-farmasave" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/farmasave.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto FarmaSave</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Dr. Max</div>
+        <div class="card-slug">codice-sconto-drmax</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-drmax</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-drmax" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/drmax.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Dr. Max</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Redcare</div>
+        <div class="card-slug">codice-sconto-redcare</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-redcare</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-redcare" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/redcare.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Redcare</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">1000Farmacie</div>
+        <div class="card-slug">codice-sconto-1000farmacie</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-1000farmacie</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-1000farmacie" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/1000farmacie.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto 1000Farmacie</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">TopFarmacia</div>
+        <div class="card-slug">codice-sconto-topfarmacia</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-topfarmacia</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-topfarmacia" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/topfarmacia.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto TopFarmacia</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">SempreFarmacia</div>
+        <div class="card-slug">codice-sconto-semprefarmacia</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-semprefarmacia</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-semprefarmacia" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/semprefarmacia.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto SempreFarmacia</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Farmacosmo</div>
+        <div class="card-slug">codice-sconto-farmacosmo</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-farmacosmo</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-farmacosmo" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/farmacosmo.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Farmacosmo</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Farmacia Soccavo</div>
+        <div class="card-slug">codice-sconto-farmacia-soccavo</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-farmacia-soccavo</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-farmacia-soccavo" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/farmaciasoccavo.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Farmacia Soccavo</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Meafarma</div>
+        <div class="card-slug">codice-sconto-meafarma</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-meafarma</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-meafarma" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/meafarma.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Meafarma</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">OpenFarma</div>
+        <div class="card-slug">codice-sconto-openfarma</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-openfarma</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-openfarma" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/openfarma.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto OpenFarma</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Vision Direct</div>
+        <div class="card-slug">codice-sconto-visiondirect</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-visiondirect</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-visiondirect" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/visiondirect.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Vision Direct</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Lentiamo</div>
+        <div class="card-slug">codice-sconto-lentiamo</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-lentiamo</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-lentiamo" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/lentiamo.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Lentiamo</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Decathlon</div>
+        <div class="card-slug">codice-sconto-decathlon</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-decathlon</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-decathlon" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/decathlon.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Decathlon</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Myprotein</div>
+        <div class="card-slug">codice-sconto-myprotein</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-myprotein</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-myprotein" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/myprotein.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Myprotein</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Maxi Sport</div>
+        <div class="card-slug">codice-sconto-maxisport</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-maxisport</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-maxisport" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/maxisport.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Maxi Sport</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Maxi Sport IT</div>
+        <div class="card-slug">codice-sconto-maxisport-it</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-maxisport-it</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-maxisport-it" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/maxisport.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Maxi Sport IT</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Prozis</div>
+        <div class="card-slug">codice-sconto-prozis</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-prozis</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-prozis" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/prozis.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Prozis</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Bulk</div>
+        <div class="card-slug">codice-sconto-bulk</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-bulk</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-bulk" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/bulk.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Bulk</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">LaFeltrinelli</div>
+        <div class="card-slug">codice-sconto-lafeltrinelli</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-lafeltrinelli</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-lafeltrinelli" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/lafeltrinelli.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto LaFeltrinelli</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Libraccio</div>
+        <div class="card-slug">codice-sconto-libraccio</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-libraccio</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-libraccio" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/libraccio.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Libraccio</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">IBS</div>
+        <div class="card-slug">codice-sconto-ibs</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-ibs</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-ibs" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/ibs.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto IBS</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Mondadori Store</div>
+        <div class="card-slug">codice-sconto-mondadori</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-mondadori</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-mondadori" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/mondadoristore.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Mondadori Store</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Udemy</div>
+        <div class="card-slug">codice-sconto-udemy</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-udemy</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-udemy" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/udemy.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Udemy</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Pandora</div>
+        <div class="card-slug">codice-sconto-pandora</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-pandora</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-pandora" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/pandora.net" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Pandora</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Swarovski</div>
+        <div class="card-slug">codice-sconto-swarovski</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-swarovski</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-swarovski" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/swarovski.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Swarovski</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Stroili</div>
+        <div class="card-slug">codice-sconto-stroili</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-stroili</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-stroili" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/stroilioro.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Stroili</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Michael Kors</div>
+        <div class="card-slug">codice-sconto-michaelkors</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-michaelkors</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-michaelkors" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/michaelkors.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Michael Kors</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">GioiaPura</div>
+        <div class="card-slug">codice-sconto-gioiapura</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-gioiapura</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-gioiapura" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/gioiapura.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto GioiaPura</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Kasanova</div>
+        <div class="card-slug">codice-sconto-kasanova</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-kasanova</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-kasanova" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/kasanova.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Kasanova</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Aosom</div>
+        <div class="card-slug">codice-sconto-aosom</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-aosom</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-aosom" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/aosom.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Aosom</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">ManoMano</div>
+        <div class="card-slug">codice-sconto-manomano</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-manomano</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-manomano" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/manomano.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto ManoMano</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">vidaXL</div>
+        <div class="card-slug">codice-sconto-vidaxl</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-vidaxl</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-vidaxl" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/vidaxl.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto vidaXL</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Booking.com</div>
+        <div class="card-slug">codice-sconto-booking</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-booking</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-booking" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/booking.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Booking.com</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Expedia</div>
+        <div class="card-slug">codice-sconto-expedia</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-expedia</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-expedia" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/expedia.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Expedia</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">FlixBus</div>
+        <div class="card-slug">codice-sconto-flixbus</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-flixbus</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-flixbus" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/flixbus.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto FlixBus</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Volotea</div>
+        <div class="card-slug">codice-sconto-volotea</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-volotea</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-volotea" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/volotea.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Volotea</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">eDreams</div>
+        <div class="card-slug">codice-sconto-edreams</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-edreams</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-edreams" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/edreams.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto eDreams</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Italo Treno</div>
+        <div class="card-slug">codice-sconto-italotreno</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-italotreno</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-italotreno" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/italotreno.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Italo Treno</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Trainline</div>
+        <div class="card-slug">codice-sconto-trainline</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-trainline</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-trainline" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/thetrainline.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Trainline</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Corsica Ferries</div>
+        <div class="card-slug">codice-sconto-corsica-ferries</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-corsica-ferries</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-corsica-ferries" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/corsica-ferries.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Corsica Ferries</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Itabus</div>
+        <div class="card-slug">codice-sconto-itabus</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-itabus</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-itabus" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/itabus.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Itabus</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">GNV</div>
+        <div class="card-slug">codice-sconto-gnv</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-gnv</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-gnv" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/gnv.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto GNV</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Avis Autonoleggio</div>
+        <div class="card-slug">codice-sconto-avis</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-avis</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-avis" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/avisautonoleggio.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Avis Autonoleggio</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Just Eat</div>
+        <div class="card-slug">codice-sconto-justeat</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-justeat</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-justeat" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/justeat.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Just Eat</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Arcaplanet</div>
+        <div class="card-slug">codice-sconto-arcaplanet</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-arcaplanet</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-arcaplanet" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/arcaplanet.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Arcaplanet</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Zooplus</div>
+        <div class="card-slug">codice-sconto-zooplus</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-zooplus</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-zooplus" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/zooplus.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Zooplus</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Bauzaar</div>
+        <div class="card-slug">codice-sconto-bauzaar</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-bauzaar</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-bauzaar" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/bauzaar.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Bauzaar</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Prenatal</div>
+        <div class="card-slug">codice-sconto-prenatal</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-prenatal</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-prenatal" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/prenatal.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Prenatal</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Kinguin</div>
+        <div class="card-slug">codice-sconto-kinguin</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-kinguin</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-kinguin" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/kinguin.net" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Kinguin</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Autodoc</div>
+        <div class="card-slug">codice-sconto-autodoc</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-autodoc</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-autodoc" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/auto-doc.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Autodoc</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Norauto</div>
+        <div class="card-slug">codice-sconto-norauto</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-norauto</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-norauto" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/norauto.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Norauto</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Gommadiretto</div>
+        <div class="card-slug">codice-sconto-gommadiretto</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-gommadiretto</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-gommadiretto" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/gommadiretto.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Gommadiretto</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Vistaprint</div>
+        <div class="card-slug">codice-sconto-vistaprint</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-vistaprint</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-vistaprint" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/vistaprint.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Vistaprint</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Photosi</div>
+        <div class="card-slug">codice-sconto-photosi</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-photosi</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-photosi" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/photosi.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Photosi</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Surfshark</div>
+        <div class="card-slug">codice-sconto-surfshark</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-surfshark</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-surfshark" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/surfshark.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Surfshark</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">YOOX</div>
+        <div class="card-slug">codice-sconto-yoox</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-yoox</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-yoox" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/yoox.com" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto YOOX</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">YOOX Italia</div>
+        <div class="card-slug">codice-sconto-yoox-it</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-yoox-it</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-yoox-it" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/yoox.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto YOOX Italia</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Interflora</div>
+        <div class="card-slug">codice-sconto-interflora</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-interflora</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-interflora" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/interflora.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Interflora</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Sorgenia</div>
+        <div class="card-slug">codice-sconto-sorgenia</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-sorgenia</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-sorgenia" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/sorgenia.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Sorgenia</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Allianz</div>
+        <div class="card-slug">codice-sconto-allianz</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-allianz</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-allianz" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/allianz.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Allianz</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">Abbonamenti.it</div>
+        <div class="card-slug">codice-sconto-abbonamenti</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-abbonamenti</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-abbonamenti" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/abbonamenti.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto Abbonamenti.it</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-name">PrezzoForte</div>
+        <div class="card-slug">codice-sconto-prezzoforte</div>
+      </div>
+      <div class="npm-box"><span class="npm-prompt">$</span>npm i codice-sconto-prezzoforte</div>
+      <div class="card-btns">
+        <a href="https://github.com/shopilo-it/codice-sconto-prezzoforte" class="btn btn-gh" target="_blank" rel="noopener">
+          <svg height="13" width="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub
+        </a>
+        <a href="https://shopilo.it/negozi/prezzoforte.it" class="btn btn-shop" target="_blank" rel="noopener">Codice sconto PrezzoForte</a>
+      </div>
+    </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  Script open-source, Dati da <a href="https://shopilo.it">shopilo.it</a> |
+  <a href="https://github.com/shopilo-it">GitHub</a>
+</footer>
+
+</body>
+</html>
